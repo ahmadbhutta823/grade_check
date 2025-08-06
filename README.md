@@ -1,6 +1,6 @@
-# GPT Model Comparison Tool
+# Grade-Specific GPT Responses API
 
-This tool allows you to compare responses from GPT-4 and GPT-3.5 models for the same prompt.
+This API provides grade-specific explanations using GPT-4, tailored for both Grade 2 and Grade 5 levels in a single response.
 
 ## Setup
 
@@ -14,15 +14,70 @@ This tool allows you to compare responses from GPT-4 and GPT-3.5 models for the 
    OPENAI_API_KEY=your_api_key_here
    ```
 
-## Usage
+## Running the API
 
-1. Run the script:
+1. Start the FastAPI server:
    ```
-   python gpt_compare.py
+   uvicorn api:app --reload
    ```
-2. Enter your question when prompted
-3. The tool will display responses from both GPT-4 and GPT-3.5 models
-4. Type 'quit' to exit the program
+2. The API will be available at: `http://localhost:8000`
+3. Interactive API documentation (Swagger UI) is available at: `http://localhost:8000/docs`
+4. Alternative API documentation (ReDoc) is available at: `http://localhost:8000/redoc`
 
-## Note
-Make sure you have access to both GPT-4 and GPT-3.5 models in your OpenAI account.
+## API Endpoints
+
+### GET /
+- Root endpoint that returns API information
+- No parameters required
+
+### POST /explain/
+- Get explanations for both grade levels (2 and 5) for a given question
+- Request body:
+  ```json
+  {
+    "question": "How does photosynthesis work?"
+  }
+  ```
+- Response format:
+  ```json
+  {
+    "question": "How does photosynthesis work?",
+    "grade2_response": {
+      "grade": 2,
+      "explanation": "Simple explanation with emojis..."
+    },
+    "grade5_response": {
+      "grade": 5,
+      "explanation": "More detailed explanation..."
+    }
+  }
+  ```
+
+## Example Usage
+
+Using curl:
+```bash
+curl -X POST "http://localhost:8000/explain/" \
+     -H "Content-Type: application/json" \
+     -d '{"question": "How does photosynthesis work?"}'
+```
+
+Using Python requests:
+```python
+import requests
+
+response = requests.post(
+    "http://localhost:8000/explain/",
+    json={
+        "question": "How does photosynthesis work?"
+    }
+)
+print(response.json())
+```
+
+## Command Line Interface
+
+You can still use the command-line interface by running:
+```
+python gpt_compare.py
+```
