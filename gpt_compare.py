@@ -43,7 +43,7 @@ def get_response(client, prompt):
     """Get response from the model."""
     try:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",  # Using GPT-3.5 for both to keep responses consistent
+            model="gpt-4o",  # Using GPT-3.5 for both to keep responses consistent
             messages=[{"role": "user", "content": prompt}]
         )
         return response.choices[0].message.content
